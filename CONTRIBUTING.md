@@ -3,29 +3,29 @@
 ## Welcome contributors to the project: 
 
 ## Short Links to Important Resources:
-* docs: handbook / roadmap (you'll learn more about this in the roadmapping session)
-* bugs: issue tracker / bug report tool
-* communcations: forum link, developer list, IRC/email, Slack, etc.
+* docs: Bootstrap, OpenCV, Express
+* bugs: Accuracy, Server 
+* communcations: CONTRIBUTORS.md
 ## Testing
+- Start local host and start python script, trigger function and see if page on frontend flips
 ## Development environment details
-
+- NA
 ## How to submit changes: Pull Request protocol etc. 
-_What people might expect in a response from the core devs_ 
-
+- NA
 ## How to report a bug: 
 * Templates: 
-  * _What to include in a bug report_
+  * Name : Date : Line (if applicable) : Description
 * First bugs for Contributors
-  * _What would be good bugs to start with?_
+  * Page stops turning after running server for a while
     
 ## New Feature Requirements
-_Any guidelines for proposing the feature_
+- Submit via CONTRIBUTORS
 
 ## Style Guide / Coding conventions 
+- airbnb style
 
 ## Code of Conduct
+- Don't be malicious
 
 ## Recognition model
-_How will contributors be recognized?_
-
-## Where can I ask for help?
+- Citation in CONTRIBUTORS.md

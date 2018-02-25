@@ -37,8 +37,6 @@ def testPossibleCentersFormula(x, y, weight, gx, gy, out):
             out[cy][cx]+=dotProduct*dotProduct*weight[cy][cx]
 
 
-
-
 def findEyeCenter(eyeImg, offset):
     # frame = cv2.imread("Eye.jpg")
     # #frame = imutils.resize(frame, width=450)

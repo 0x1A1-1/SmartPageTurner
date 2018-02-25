@@ -1,0 +1,24 @@
+{
+  "name": "triggered",
+  "version": "0.0.1",
+  "description": "Host for smart page turner",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cigarent/OpenCV-Triggered/tree/master/FrontEnd"
+  },
+  "keywords": [
+    "OpenCV",
+    "Python",
+    "gazeTracking"
+  ],
+  "author": "Xiao He (Cigarent)",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}

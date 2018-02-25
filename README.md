@@ -1,5 +1,5 @@
-# OpenCV-Triggered
-Hack Illinois hack project. Automate eye gaze tracker for reading ( DUDE CHILL )
+# Smart Page Turner
+Hack Illinois hackathon project. Automate eye gaze tracker for assistive reading with OpenCV.
 
 
 ## Gaze Detection
@@ -9,12 +9,21 @@ Dependencies needed for the gaze detection:
 - numpy
 - imutils
 - scipy
+- shape_predictor_68_face_landmarks.dat 
 
-To run the python module:
+#### To run the python module:
 ```
 python landmark_with_center.py --shape-predictor shape_predictor_68_face_landmarks.dat --camera 0
 ```
-***if you want to use external webcam, change camera param to 1
+*if you want to use external webcam, change camera param to 1
+
+
+#### To change threshold for detection:
+```
+FRAME_THRESHOLD = 10
+RATIO_THRESHOLD_LB = 0.45
+RATIO_THRESHOLD_UB = 0.55
+```
 
 
 ## Web host

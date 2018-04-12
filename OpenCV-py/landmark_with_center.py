@@ -20,9 +20,11 @@ ap.add_argument("-r", "--camera", type=int, default=-1,
 args = vars(ap.parse_args())
 
 # Global vars
-FRAME_THRESHOLD = 10
-RATIO_THRESHOLD_LB = 0.45
-RATIO_THRESHOLD_UB = 0.55
+FRAME_THRESHOLD = 5
+XRATIO_THRESHOLD_LB = 0.45
+XRATIO_THRESHOLD_UB = 0.55
+YRATIO_THRESHOLD_LB = 0.4
+YRATIO_THRESHOLD_UB = 0.6
 COUNTER = 0
 TRIGGERED = 0
 MAX = 0
@@ -98,8 +100,8 @@ def eye_center(frame_grey, eyes):
 
         coord = eye_local_fabian.findEyeCenter(eyeImg,0)
 
-        cv2.circle(leftEyeROI, coord, 1, (255,255,255), -1 )
-        cv2.imshow("Frame_STUFF", leftEyeROI)
+        # cv2.circle(leftEyeROI, coord, 1, (255,255,255), -1 )
+        # cv2.imshow("Frame_STUFF", leftEyeROI)
 
         return (coord[0]+x1, coord[1]+y1)
 
@@ -118,7 +120,7 @@ def bottom_left_region(eye, center):
 
     x_ratio  = (center[0] - eye[0][0])/(eye[3][0] - eye[0][0])
     y_ratio  = (eye[5][1] - center[1])/(eye[5][1] - eye[1][1])
-
+    # print((x_ratio, y_ratio))
     return (x_ratio, y_ratio)
 
 # initialize dlib's face detector (HOG-based) and then create
@@ -169,9 +171,9 @@ while True:
         eyeboxes = [(lx, ly, lw, lh), (rx, ry, rw, rh)]
 
         # Draw rectangle for eyes and face for testing purpose
-        cv2.rectangle(frame, (lx, ly), (lx + lw, ly + lh), (0, 255, 255), 2)
-        cv2.rectangle(frame, (rx, ry), (rx + rw, ry + rh), (255, 255, 0), 2)
-        cv2.rectangle(frame, (rect.left(), rect.top()), (rect.right(), rect.bottom()), (255, 0, 0), 2)
+        # cv2.rectangle(frame, (lx, ly), (lx + lw, ly + lh), (0, 255, 255), 2)
+        # cv2.rectangle(frame, (rx, ry), (rx + rw, ry + rh), (255, 255, 0), 2)
+        # cv2.rectangle(frame, (rect.left(), rect.top()), (rect.right(), rect.bottom()), (255, 0, 0), 2)
         #detected = eye_cascade.detectMultiScale(gray, 1.3, 5)
 
         # Determine and draw the center of the left eye
@@ -184,8 +186,8 @@ while True:
         # Calculate absolute ratio for left eye center
         (xratio, yratio) = bottom_left_region(leftEye, (lcenterx, lcentery))
 
-        # Count the center of X in threshold
-        if RATIO_THRESHOLD_LB<xratio<RATIO_THRESHOLD_UB:
+        # Count the center of X,Y in threshold
+        if XRATIO_THRESHOLD_LB<xratio<XRATIO_THRESHOLD_UB:
             COUNTER += 1
         else:
             if COUNTER >= FRAME_THRESHOLD:
@@ -202,26 +204,26 @@ while True:
             MIN = leftEye[5][1] - leftEye[1][1]
 
         # Output texts
-        cv2.putText(frame, "X%: {}".format(xratio), (10, 30),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-        cv2.putText(frame, "Y%: {}".format(yratio), (10, 60),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        # cv2.putText(frame, "X%: {}".format(xratio), (10, 30),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        # cv2.putText(frame, "Y%: {}".format(yratio), (10, 60),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        #
+        # cv2.putText(frame, "TRIG: {}".format(TRIGGERED), (10, 90),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        #
+        # cv2.putText(frame, "MAX: {}".format(MAX), (10, 120),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+        #
+        # cv2.putText(frame, "MIN: {}".format(MIN), (10, 150),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
-        cv2.putText(frame, "TRIG: {}".format(TRIGGERED), (10, 90),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-
-        cv2.putText(frame, "MAX: {}".format(MAX), (10, 120),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-
-        cv2.putText(frame, "MIN: {}".format(MIN), (10, 150),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-
-        for (x, y) in shape:
-            cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
+        # for (x, y) in shape:
+        #     cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
 
 
     # show the frame for testing
-    cv2.imshow("Frame", frame)
+    # cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
 
     # if the `q` key was pressed, break from the loop
@@ -229,18 +231,19 @@ while True:
         break
 
     # Uncomment this line for localhost testing
-    # if TRIGGERED >= 2:
-    #     print("POST SENT")
-    #     resp = requests.post("http://172.16.46.128:3000/flip", json={"flip":True} )
-    #     pprint(resp)
+    if TRIGGERED >= 1:
+        print("TRIGGER SENT")
+        TRIGGERED = 0
+    #     resp = requests.post("http://10.139.178.108:3000/flip", json={"flip":True} )
+    #     #pprint(resp)
     #     # if (resp.confirm == True):
-    #     resp = requests.get("http://172.16.46.128:3000/flip")
+    #     resp = requests.get("http://10.139.178.108:3000/flip")
     #     while resp.json() != True:
-    #         pprint(resp.text)
-    #         pprint(resp.content)
-    #         pprint(resp.json())
-    #         resp = requests.get("http://172.16.46.128:3000/flip")
-    #         input("heyya")
+    #      #   pprint(resp.text)
+    #       #  pprint(resp.content)
+    #        # pprint(resp.json())
+    #         resp = requests.get("http://10.139.178.108:3000/flip")
+    #         #input("heyya")
     #         continue
     #     TRIGGERED = 0
 

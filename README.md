@@ -1,7 +1,6 @@
 # Smart Page Turner
-Hack Illinois hackathon project. Automate eye gaze tracker for assistive reading with OpenCV.
-This is computer vision layer of the smart page turner project
-
+Automate eye gaze tracker for assistive reading with OpenCV.
+Check out demo @ https://youtu.be/o7uCJZYBTVk
 
 ## Gaze Detection
 Dependencies needed for the gaze detection:
